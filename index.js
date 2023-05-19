@@ -58,7 +58,7 @@ async function run() {
       const data = await toysCollection.findOne(query);
       res.send(data)
     })
-    app.put('/update/:id', async(req, res)=>{
+    app.patch('/update/:id', async(req, res)=>{
       const id = req.params.id
       const query = {_id: new ObjectId(id)};
       const body = req.body;
