@@ -95,7 +95,7 @@ run().catch(console.dir);
 
 
 
-
+// this is home page data
 app.get('/', (req, res)=>{
     console.log(process.env.User_Name)
     res.send('hello bangla')
