@@ -24,40 +24,47 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     
-    await client.connect();
+    // await client.connect();
     const database = client.db("Toys");
     const toysCollection = database.collection("toysCollection");
 
     app.get('/allToys', async(req, res)=>{
-      const body =  toysCollection.find();
+      const body =  toysCollection.find().limit(20);
       const result = await body.toArray();
       res.send(result)
     })
+
     app.get('/myToys/:email', async(req, res)=>{
         
       const data = await toysCollection.find({email: req.params.email}).toArray();
       res.send(data)
     })
+
     app.get('/allToys/:name', async(req, res)=>{
         
-      const data = await toysCollection.find({name: req.params.name}).toArray();
+      const data = await toysCollection.find({name: {$regex: req.params.name, $options: "i"}}).toArray();
       res.send(data)
     })
+
     app.get('/home/:category', async(req, res)=>{
         
       const data = await toysCollection.find({category: req.params.category}).toArray();
       res.send(data)
     })
+
     app.get('/details/:id', async(req, res)=>{
       const query = {_id: new ObjectId(req.params.id)}
       const data = await toysCollection.findOne(query);
       res.send(data)
     })
+
     app.get('/update/:id', async(req, res)=>{
       const query = {_id: new ObjectId(req.params.id)}
       const data = await toysCollection.findOne(query);
       res.send(data)
     })
+
+
     app.patch('/update/:id', async(req, res)=>{
       const id = req.params.id
       const query = {_id: new ObjectId(id)};
